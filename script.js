@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
       const rows = jsonData.slice(1);
+
       dateData = rows.map(row => row[0]);
       temperatureData = rows.map(row => parseFloat(row[1])).filter(v => !isNaN(v));
 
@@ -41,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     statusMessage.textContent = "📈 Graph running...";
+
     const ctx = document.getElementById('climateChart').getContext('2d');
     if (chart) chart.destroy();
 
@@ -81,10 +83,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const temp = temperatureData[currentIndex];
       const date = dateData[currentIndex];
+
       chart.data.labels.push(date);
       chart.data.datasets[0].data.push(temp);
       chart.data.datasets[0].pointBackgroundColor.push(getColor(temp));
       chart.update();
+
       updateReading(temp, date);
       currentIndex++;
     }, 1000);
@@ -97,4 +101,51 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateReading(temp, date) {
     currentReading.textContent = `🌡️ Temperature: ${temp.toFixed(1)} °C | 📅 Date: ${date}`;
   }
+
+  // ✅ MQTT Setup for HiveMQ Cloud
+  const mqttClient = mqtt.connect('wss://2c8b134cfb7146368def8c7f18cdfb1d.s1.eu.hivemq.cloud:8884/mqtt', {
+    clientId: 'client-' + Math.random().toString(16).substring(2, 10),
+    username: 'Thuyavan',
+    password: 'Thuya0328',
+    clean: true,
+    reconnectPeriod: 1000,
+    connectTimeout: 5000
+  });
+
+  mqttClient.on('connect', () => {
+    console.log('✅ MQTT connected');
+    document.getElementById("mqttStatus").textContent = "✅ MQTT: Connected";
+
+    mqttClient.subscribe('climate/temp', (err) => {
+      if (err) {
+        console.error('❌ MQTT subscription error:', err);
+        document.getElementById("mqttStatus").textContent = "⚠️ MQTT: Subscription failed";
+      } else {
+        console.log('📡 Subscribed to topic: climate/temp');
+      }
+    });
+  });
+
+  mqttClient.on('error', (err) => {
+    console.error('❌ MQTT connection error:', err);
+    document.getElementById("mqttStatus").textContent = "❌ MQTT: Connection error";
+  });
+
+  mqttClient.on('message', (topic, message) => {
+    try {
+      const payload = JSON.parse(message.toString());
+      const { temperature, date } = payload;
+
+      if (chart) {
+        chart.data.labels.push(date);
+        chart.data.datasets[0].data.push(temperature);
+        chart.data.datasets[0].pointBackgroundColor.push(getColor(temperature));
+        chart.update();
+      }
+
+      updateReading(temperature, date);
+    } catch (err) {
+      console.error("❌ Invalid MQTT message format:", err);
+    }
+  });
 });
