@@ -6,6 +6,79 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-input {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 1em;
+  background-color: #00c9ff;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 10px 30px;
+  font-size: 1.1em;
+  background-color: #03a9f4;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  margin: 10px;
+  box-shadow: 0 0 15px rgba(3, 169, 244, 0.4);
+}
+
+button:hover {
+  background-color: #0288d1;
+}
+
+canvas {
+  background-color: white;
+  border-radius: 10px;
+  margin-top: 30px;
+  box-shadow: 0 0 20px rgba(255,255,255,0.2);
+}
+
+#statusMessage {
+  margin-top: 15px;
+  font-size: 1rem;
+  color: #aef1ff;
+}
+
+#currentReading {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+</style>
   <div class="container">
     <h1>🌡️ Climate Temperature Graph</h1>
 
@@ -15,11 +88,14 @@
     <button id="startGraphBtn">▶️ Start Graph</button>
 
     <p id="statusMessage">Waiting for file upload...</p>
-    <p id="currentReading">🌡️ Temperature: -- °C | 📅 Date: --</p>
+<p id="mqttStatus">🔌 MQTT: Connecting...</p>
+<p id="currentReading">🌡️ Temperature: -- °C | 📅 Date: --</p>
+
 
     <canvas id="climateChart"></canvas>
   </div>
 
+  <!-- Script order matters -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
