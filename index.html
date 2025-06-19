@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Climate Graph Viewer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🌡️ Climate Temperature Graph</h1>
+
+    <label for="excelFile" class="custom-file-input">📁 Upload Excel File</label>
+    <input type="file" id="excelFile" accept=".xlsx" />
+
+    <button id="startGraphBtn">▶️ Start Graph</button>
+
+    <p id="statusMessage">Waiting for file upload...</p>
+    <p id="currentReading">🌡️ Temperature: -- °C | 📅 Date: --</p>
+
+    <canvas id="climateChart"></canvas>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
