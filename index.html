@@ -7,7 +7,7 @@
 </head>
 <body>
   <style>
-body {
+    body {
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
   color: white;
@@ -73,11 +73,6 @@ canvas {
   color: #aef1ff;
 }
 
-#currentReading {
-  margin-top: 10px;
-  font-size: 1.2rem;
-  color: #ffffff;
-}
 </style>
   <div class="container">
     <h1>🌡️ Climate Temperature Graph</h1>
@@ -88,17 +83,12 @@ canvas {
     <button id="startGraphBtn">▶️ Start Graph</button>
 
     <p id="statusMessage">Waiting for file upload...</p>
-<p id="mqttStatus">🔌 MQTT: Connecting...</p>
-<p id="currentReading">🌡️ Temperature: -- °C | 📅 Date: --</p>
-
-
     <canvas id="climateChart"></canvas>
   </div>
 
-  <!-- Script order matters -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
